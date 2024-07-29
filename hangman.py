@@ -1,40 +1,42 @@
 import random
+
 HANGMAN_PICS = ['''
-  +---+
-      |
-      |
-      |
-     ===''', '''
-  +---+
-  O   |
-      |
-      |
-     ===''', '''
-  +---+
-  O   |
-  |   |
-      |
-     ===''', '''
-  +---+
-  O   |
- /|   |
-      |
-     ===''', '''
-  +---+
-  O   |
- /|\  |
-      |
-     ===''', '''
-  +---+
-  O   |
- /|\  |
- /    |
-     ===''', '''
-  +---+
-  O   |
- /|\  |
- / \  |
-     ===''']
+ +---+
+     |
+     |
+     |
+    ===''', '''
+ +---+
+ O   |
+     |
+     |
+    ===''', '''
+ +---+
+ O   |
+ |   |
+     |
+    ===''', '''
+ +---+
+ O   |
+/|   |
+     |
+    ===''', '''
+ +---+
+ O   |
+/|\  |
+     |
+    ===''', '''
+ +---+
+ O   |
+/|\  |
+/    |
+    ===''', '''
+ +---+
+ O   |
+/|\  |
+/ \  |
+    ===''']
+
 words = '''ant axolotl aardvark
         baboon badger bat bear beaver
         camel cat clam cobra cougar coyote crow
@@ -58,8 +60,8 @@ words = '''ant axolotl aardvark
         xerus
         yak yellowjacket yellowtail
         zebra zokor'''.split()
+
 def random_word(wordList):
-    # this function returns a random string from the passed list of strings.
     wordIndex = random.randint(0, len(wordList) - 1)
     return wordList[wordIndex]
 
@@ -73,7 +75,6 @@ def display_board(missed_letters, correct_letters, secret_word):
     print()
 
     blanks = '_' * len(secret_word)
-# replace blanks with correctly guessed letters
     for i in range(len(secret_word)):
         if secret_word[i] in correct_letters:
             if i < len(blanks):
@@ -82,25 +83,20 @@ def display_board(missed_letters, correct_letters, secret_word):
     for letter in blanks:
         print(letter, end=' ')
     print()
+
 def get_guess(already_guessed):
-    # Returns the letter the player entered.
-    # This function makes sure the player entered a single letter and not something else.
-    
     while True:
         print('Guess a letter.')
         guess = input()
         guess = guess.lower()
-        if len(guess) != 1:
+        if len(guess) != 1 or not guess.isalpha():
             print('Please enter a single letter.')
         elif guess in already_guessed:
             print('You have already guessed that letter. Choose again.')
-        elif guess not in 'abcdefghijklmnopqrstuvwxyz':
-            print('Please enter a LETTER.')
         else:
             return guess
 
 def play_again():
-    # This function returns True if the player wants to play again, otherwise it returns False.
     print('Do you want to play again? (yes or no)')
     return input().lower().startswith('y')
 
@@ -113,7 +109,7 @@ game_over = False
 while True:
     print('The secret word is in the dictionary. You have 6 guesses.')
     display_board(missed_letters, correct_letters, secret_word)
-    
+
     guess = get_guess(missed_letters + correct_letters)
 
     if guess in secret_word:
@@ -124,7 +120,7 @@ while True:
             if secret_word[i] not in correct_letters:
                 found_all_letters = False
                 break
-        if found_all_letters:
+        if found_all_letters and not game_over:
             print('Yes! The secret word is "' + secret_word + '"! You won!')
             game_over = True
     else:
@@ -136,7 +132,7 @@ while True:
                 len(correct_letters)) + ' correct guesses, the word was "' + secret_word + '"')
             game_over = True
 
-    if found_all_letters:
+    if found_all_letters and not game_over:
         print('Yes! The secret word is "' + secret_word + '"! You won!')
         game_over = True
 
