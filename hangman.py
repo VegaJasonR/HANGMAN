@@ -107,6 +107,7 @@ secret_word = random_word(words)
 game_over = False
 
 while True:
+    found_all_letters = False 
     print('The secret word is in the dictionary. You have 6 guesses.')
     display_board(missed_letters, correct_letters, secret_word)
 
